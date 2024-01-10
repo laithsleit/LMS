@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\InstructorController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,3 +32,7 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+
+Route::get('/admin/dashboard', [AdminController::class, 'AdminDashboard'])->name('admin.Dashboard');
+Route::get('/Instructor/dashboard', [InstructorController::class, 'InstructorDashboard'])->name('Instructor.Dashboard');
