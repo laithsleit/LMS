@@ -5,6 +5,8 @@ use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -18,7 +20,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+
+        return view('welcome');
+
 });
 
 Route::get('/dashboard', function () {
@@ -33,6 +37,12 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
+// Admin group middleware
+Route::middleware(['auth','roles:admin'])->group(function () {
+    Route::get('/admin/dashboard', [AdminController::class, 'AdminDashboard'])->name('admin.Dashboard');
+}); // End of admin group middleware
 
-Route::get('/admin/dashboard', [AdminController::class, 'AdminDashboard'])->name('admin.Dashboard');
-Route::get('/Instructor/dashboard', [InstructorController::class, 'InstructorDashboard'])->name('Instructor.Dashboard');
+// Admin group middleware
+Route::middleware(['auth','roles:instructor'])->group(function () {
+    Route::get('/Instructor/dashboard', [InstructorController::class, 'InstructorDashboard'])->name('Instructor.Dashboard');
+});  // End of instructor group middleware
